@@ -10,6 +10,7 @@ def to_parquet(schema:str=None, log_path:str=None):
         logger = PrepayLogger(base_logger, fh_path=log_path)
         logger.info('***Started*** at {}'.format(datetime.now()))
         frame = PrepayDataFrame(schema_json=schema)
+        frame.read_csv()
         frame.to_parquet(infer_schema=False)
         end_time = datetime.now()
         logger.info('***Finished*** at {}'.format(end_time))
