@@ -1,0 +1,22 @@
+{
+  "date": "2020-11-01",
+  "version": "v0.1 (alpha testing)",
+  "raw_source": "",
+  "parquet_source": "",
+  "parquet_target": "",
+  "schema_src": "https://loanperformancedata.fanniemae.com/lppub-docs/FNMA_SF_Loan_Performance_File_layout.pdf",
+  "data_dictionary": "https://capmrkt.fanniemae.com/resources/file/credit-risk/pdf/cas-glossary-020818.pdf",
+  "columns": {
+    "LOAN_ID": {
+      "column_idx": 0,
+      "dd_type": "string",
+      "pa_type": "string",
+      "definition": "LOAN IDENTIFIER",
+      "fnma_type": "ALPHA-NUMERIC",
+      "date_column": false,
+      "notes": "",
+      "unique": true,
+      "nullable": false
+    }
+  }
+}
