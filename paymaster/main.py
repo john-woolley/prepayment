@@ -33,7 +33,7 @@ if __name__ == '__main__':
     schema_name = 'perf'
     ingest_dir = '/mnt/data/fnma-data/sf/perf/raw'
     files = os.listdir(ingest_dir)
-    mods = [job.__module__.split('.') for job in jobs]
+    mods = [job.__module__.split('.')[-1] for job in jobs]
     names = [job.__name__ for job in jobs]
     modnames = ['.'.join([mods[i], names[i]]) for i in range(len(mods))]
     print('{client} \n queuing {jobs} in {files}'.format(
