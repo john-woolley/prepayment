@@ -46,7 +46,7 @@ if __name__ == '__main__':
     with performance_report(report_path):
         try:
             for job in jobs:
-                res = job(logfile)
+                res = job(log_path=logfile)
         except Exception as e:
             env.shutdown()
             raise e
