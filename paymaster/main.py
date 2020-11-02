@@ -35,7 +35,7 @@ if __name__ == '__main__':
     files = os.listdir(ingest_dir)
     mods = [job.__module__.split('.')[-1] for job in jobs]
     names = [job.__name__ for job in jobs]
-    modnames = ['.'.join([mods[i], names[i]]) for i in range(len(mods))]
+    # modnames = ['.'.join([mods[i], names[i]]) for i in range(len(mods))]
     print('{client} \n queuing {jobs} in {files}'.format(
         client=repr(env.client), jobs=jobs, files=files))
     ts = datetime.now().strftime('%Y%m%d%H%M%S')
