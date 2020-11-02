@@ -27,13 +27,14 @@ class DaskEnv:
         else:
             self.cluster_type = cluster_type
             self.scheduler = scheduler
-            self.host = self.scheduler['address'].split(':')[0]
+            if self.scheduler:
+                self.host = self.scheduler['address'].split(':')[0]
             self.workers = workers
             self.user = user
             self.conda_name = conda_name
         self.mem_limit = mem_limit
-        self.nprocs = nprocs
-        self.nthreads = nthreads
+        self.nprocs = int(nprocs)
+        self.nthreads = int(nthreads)
         self.webdriver = webdriver
         self.webdriver_path = webdriver_path
         if not self.client:
@@ -48,7 +49,11 @@ class DaskEnv:
         klass = CLUSTER_TYPES[self.cluster_type]
         if klass == LocalCluster:
             try:
-                client = Client(host=self.scheduler['address'])
+                cluster =LocalCluster(n_workers=self.nprocs,
+                                      threads_per_worker=self.nthreads,
+                                      memory_limit="{}GB"
+                                      .format(self.mem_limit))
+                client = Client()
                 self.client = client
             except OSError:
                 print('oserror')

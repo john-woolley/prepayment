@@ -13,23 +13,25 @@ LOG_ROOT = '/var/log/paymaster/'
 if __name__ == '__main__':
     __spec__ = None
     load_title(APP_NAME, VERSION, DATE)
-    print(datetime.now())
-    cluster_resume = '192.168.2.5:8786'
+    print(os.getcwd(), datetime.now())
+    cluster_resume = str(input('Running Cluster or ENTER for new local: \n')
+                         or 'new')
     if cluster_resume != 'new':
         print(cluster_resume)
         client = Client(cluster_resume)
-        print(client)
         env = DaskEnv(client=client)
+        print(client.dashboard_link)
     else:
-        mem_limit = str(input('Input Max Ram (GB) [Default=8]')
+        mem_limit = str(input('Input Max Ram (GB) [Default=8]: \n')
                         or '8')
-        procs = str(input('Input Number of Processes [Default=1]')
-                        or '1')
-        threads = str(input('Input Threads per Process [Default=2]')
+        procs = str(input('Input Number of Processes [Default=1]: \n')
+                    or '1')
+        threads = str(input('Input Threads per Process [Default=2]: \n')
                       or '2')
         env = DaskEnv(mem_limit=mem_limit, nprocs=procs, nthreads=threads)
+        print(env.client.dashboard_link)
     jobs = [ingestion.to_parquet]
-    schema = 'schema/perf_schema.json'
+    schema = 'paymaster/schema/perf_schema.json'
     schema_name = 'perf'
     ingest_dir = '/mnt/data/fnma-data/sf/perf/raw'
     files = os.listdir(ingest_dir)
@@ -46,7 +48,7 @@ if __name__ == '__main__':
     with performance_report(report_path):
         try:
             for job in jobs:
-                res = job(log_path=logfile)
+                res = job(schema=schema, log_path=logfile)
         except Exception as e:
             env.shutdown()
             raise e
