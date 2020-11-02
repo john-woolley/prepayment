@@ -31,7 +31,7 @@ if __name__ == '__main__':
     jobs = [ingestion.to_parquet]
     schema = 'schema/perf_schema.json'
     schema_name = 'perf'
-    ingest_dir = 'mnt/data/fnma-data/sf/perf/raw'
+    ingest_dir = '/mnt/data/fnma-data/sf/perf/raw'
     files = os.listdir(ingest_dir)
     mods = [job.__module__.split('.') for job in jobs]
     names = [job.__name__ for job in jobs]
