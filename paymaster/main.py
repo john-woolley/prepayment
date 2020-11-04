@@ -14,7 +14,7 @@ if __name__ == '__main__':
     __spec__ = None
     load_title(APP_NAME, VERSION, DATE)
     print(os.getcwd(), datetime.now())
-    cluster_resume = str(input('Running Cluster or ENTER for new local: \n')
+    cluster_resume = str(input('Running Cluster or ENTER for new local: ')
                          or 'new')
     if cluster_resume != 'new':
         print(cluster_resume)
@@ -22,11 +22,11 @@ if __name__ == '__main__':
         env = DaskEnv(client=client)
         print(client.dashboard_link)
     else:
-        mem_limit = str(input('Input Max Ram (GB) [Default=8]: \n')
+        mem_limit = str(input('Input Max Ram (GB) [Default=8]: ')
                         or '8')
-        procs = str(input('Input Number of Processes [Default=1]: \n')
+        procs = str(input('Input Number of Processes [Default=1]: ')
                     or '1')
-        threads = str(input('Input Threads per Process [Default=2]: \n')
+        threads = str(input('Input Threads per Process [Default=2]: ')
                       or '2')
         env = DaskEnv(mem_limit=mem_limit, nprocs=procs, nthreads=threads)
         print(env.client.dashboard_link)
