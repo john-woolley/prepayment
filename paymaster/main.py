@@ -31,7 +31,7 @@ if __name__ == '__main__':
         env = DaskEnv(mem_limit=mem_limit, nprocs=procs, nthreads=threads)
         print(env.client.dashboard_link)
     jobs = [ingestion.to_parquet]
-    schema = 'paymaster/schema/perf_schema.json'
+    schema = 'paymaster/schema/perf_schema.yml'
     schema_name = 'perf'
     ingest_dir = '/mnt/data/fnma-data/sf/perf/raw'
     files = os.listdir(ingest_dir)

@@ -1,0 +1,1168 @@
+schema: SingleFamilyPerformance
+version: alpha0.2
+date: 2020-11-02
+raw_source: /mnt/data/fnma-data/sf/perf/raw
+parquet_source: /mnt/data/fnma-data/sf/perf/parquet
+parquet_target: /mnt/data/fnma-data/sf/perf/parquet
+ingest_columns:
+  BLANK0:
+    idx: 0
+    args:
+      - drop
+  LOAN_ID:
+    idx: 1
+    fnma_name: Loan Identifier
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: A unique identifier for the mortgage loan.
+    fnma_notes:  >-
+      The Loan Identifier does not correspond to other mortgage loan identifiers found in existing
+      Fannie Mae disclosures.
+    dd_type: object
+    pa_type: string
+    args:
+      - unique
+      - index
+  REPORT_DT:
+    idx: 2
+    fnma_name: Monthly Reporting Period
+    fnma_type: DATE
+    fnma_desc: The month and year that pertains to the servicer’s cut-off period for mortgage loan information.
+    fnma_notes: ~
+    dd_type: object
+    pa_type: string
+    args:
+      - date: "%m%Y"
+      - category
+  CHANNEL:
+    idx: 3
+    fnma_name: Channel
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: The origination channel used by the party that delivered the loan to the issuer.
+    fnma_notes: Retail = R; Correspondent = C; Broker = B
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  SELLER:
+    idx: 4
+    fnma_name: Seller Name
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: The name of the entity that delivered the mortgage loan to Fannie Mae.
+    fnma_notes: >-
+      For sellers that represent less than one percent of volume within a given acquisition quarter as
+      represented by the original unpaid principal balance, "Other" will be displayed in this field.
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  SERVICER:
+    idx: 5
+    fnma_name: Servicer Name
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: The name of the entity that serves as the primary servicer of the mortgage loan.
+    fnma_notes: >-
+      For servicers that represent less than one percent of the current actual unpaid principal balance for the last
+      month of a given quarter, "Other" will be displayed in this field.
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  BLANK6:
+    idx: 6
+    args:
+      - drop
+  ORIG_RT:
+    idx: 7
+    fnma_name: Original Interest Rate
+    fnma_type: NUMERIC
+    fnma_desc: The original interest rate on a mortgage loan as identified in the original mortgage note.
+    fnma_notes: ~
+    dd_type: float32
+    pa_type: float32
+  CURR_RT:
+    idx: 8
+    fnma_name: Current Interest Rate
+    fnma_type: NUMERIC
+    fnma_desc: The rate of interest in effect for the periodic installment due.
+    fnma_notes: >-
+      For a mortgage loan that has been modified, this value will be updated to reflect the modified terms,
+      if applicable.
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+  ORIG_UPB:
+    idx: 9
+    fnma_name: Original UPB
+    fnma_type: NUMERIC
+    fnma_desc: The dollar amount of the loan as stated on the note at the time the loan was originated.
+    fnma_notes: Values disclosed will be rounded.
+    dd_type: float32
+    pa_type: float32
+  BLANK10:
+    idx: 10
+    args:
+      - drop
+  CURR_ACT_UPB:
+    idx: 11
+    fnma_name: Current Actual UPB
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      The current actual outstanding unpaid principal balance of a mortgage loan,
+      reflective of payments actually received from the related borrower.
+    fnma_notes: >-
+      For a mortgage loan that has been modified, the current actual UPB will be updated to reflect the modified terms,
+      including principal forgiveness, if applicable. The current actual UPB will be reduced to zero in the month in
+      which the loan is removed from the Reference Pool, as applicable. Due to borrower privacy considerations,
+      this value will be rounded to the nearest $1,000 for the first six months of the life of the loan.
+    dd_type: float32
+    pa_type: float32
+  ORIG_TERM:
+    idx: 12
+    fnma_name: Original Loan Term
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      For fixed-rate, adjustable-rate and Interest-only mortgages, the number of months in which regularly scheduled
+      borrower payments are due at the time the loan was originated.
+    fnma_notes: ~
+    dd_type: int16
+    pa_type: int16
+  ORIG_DT:
+    idx: 13
+    fnma_name: Origination Date
+    fnma_type: DATE
+    fnma_desc: The date of each individual note.
+    fnma_notes: ~
+    dd_type: object
+    pa_type: date32
+    args:
+      - date: "%m%Y"
+  FIRST_PAY_DT:
+    idx: 14
+    fnma_name: First Payment Date
+    fnma_type: DATE
+    fnma_desc: >-
+      The date of the first scheduled mortgage loan payment to be made by the borrower under the terms of the
+      mortgage loan documents.
+    fnma_notes: ~
+    dd_type: object
+    pa_type: date32
+    args:
+      - date: "%m%Y"
+  LOAN_AGE:
+    idx: 15
+    fnma_name: Loan Age
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      The number of calendar months remaining until the outstanding unpaid principal balance of the mortgage loan
+      amortizes to a zero balance, taking into account any additional prepayments, which could lead to the loan
+      paying off earlier than its maturity date.
+    fnma_notes: This field will be left blank for mortgage loans that have been modified.
+    dd_type: pd.Int16Dtype
+    pa_type: int16
+    args:
+      - nullable
+  LEGAL_MTM:
+    idx: 16
+    fnma_name: Remaining Months to Legal Maturity
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      The number of calendar months remaining until the mortgage loan is due to be paid in full based on the maturity
+      date as defined in the mortgage documents.
+    fnma_notes: ~
+    dd_type: pd.Int16Dtype
+    pa_type: int16
+    args:
+      - nullable
+  MTM:
+    idx: 17
+    fnma_name: Remaining Months to Maturity
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      The number of calendar months remaining until the outstanding unpaid principal balance of the mortgage loan
+      amortizes to a zero balance, taking into account any additional prepayments, which could lead to the loan
+      paying off earlier than its maturity date.
+    fnma_notes: This field will be left blank for mortgage loans that have been modified.
+    dd_type: pd.Int16Dtype
+    pa_type: int16
+    args:
+      - nullable
+  MAT_DT:
+    idx: 18
+    fnma_name: Maturity Date
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      The month and year in which a mortgage loan is scheduled to be paid in full as defined in the
+      mortgage loan documents.
+    fnma_notes: >-
+      For a mortgage loan that has been modified, the maturity date will be updated to reflect the modified terms,
+      if applicable.
+    dd_type: object
+    pa_type: date32
+    args:
+      - date: "%m%Y"
+      - nullable
+  ORIG_LTV:
+    idx: 19
+    fnma_name: Original Loan to Value Ratio (LTV)
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      The ratio, expressed as a percentage, obtained by dividing the amount of the loan at origination by
+      the value of the property.
+    fnma_notes: >-
+      This field is calculated by dividing the original loan amount by either
+
+        (1) in the case of a purchase, the lower of the sales price of a mortgaged property or its value at the time
+        of the sale, or
+        (2) in the case of a refinancing, the value of the mortgaged property at the time of refinancing.
+
+      For the purposes of calculating the LTV ratio and determining eligibility for a mortgage loan acquired through a
+      HARP refinancing, an appraisal is not required if Fannie Mae waived the property fieldwork requirements to
+      establish program eligibility. The disclosed LTV ratio for that loan is based on an estimate of value produced by
+      an automated valuation model at the time of the refinance.
+
+      Alternatively, if Fannie Mae did not waive the  property fieldwork requirements, an appraisal can be provided
+      to Fannie Mae by the lender to establish program eligibility.
+
+      When an appraisal is obtained and is used to successfully establish HARP program eligibility, it is used
+      to calculate the disclosed LTV ratio. Value is reported as null if LTV is >97% or is >200% for a mortgage loan
+      acquired through a HARP refinance, or unknown.
+    dd_type: pd.Int16Dtype
+    pa_type: int16
+    args:
+      - nullable
+  ORIG_CLTV:
+    idx: 20
+    fnma_name: Original Combined Loan to Value Ratio (CLTV)
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      The ratio, expressed as a percentage, obtained by dividing the amount of all known outstanding loans at
+      origination by the value of the property.
+    fnma_notes: >-
+      This field is calculated by adding together
+        (i) the original loan amount of the first lien mortgage loan,
+        (ii) the amount then currently drawn on a home equity line of credit as of the origination date of
+          the underlying mortgage loan, and
+        (iii) the outstanding principal balance of any other subordinate mortgage loan as of the origination date of
+          the underlying mortgage loan,
+      and dividing the resulting sum by the lower of
+        (x) the sales price of the mortgaged property and
+        (y) the value of the mortgaged property.
+    dd_type: pd.Int16Dtype
+    pa_type: int16
+    args:
+      - nullable
+  NUM_BORROWERS:
+    idx: 21
+    fnma_name: Number of Borrowers
+    fnma_type: NUMERIC
+    fnma_desc: The number of individuals obligated to repay the mortgage loan.
+    fnma_notes: ~
+    dd_type: pd.Int16Dtype
+    pa_type: int16
+    args:
+      - category
+      - nullable
+  DTI:
+    idx: 22
+    fnma_name: Debt-to-Income (DTI)
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      The ratio obtained by dividing the total monthly debt expense by the total monthly income of the borrower at
+      the time the loan was originated.
+    fnma_notes: >-
+      For values outside the allowable range, or if unknown, or if the mortgage loan is a HARP refinance,
+      this value will be blank.
+    dd_type: pd.Int16Dtype
+    pa_type: int16
+    args:
+      - nullable
+  FICO:
+    idx: 23
+    fnma_name: Borrower Credit Score at Origination
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      A numerical value used by the financial services industry to evaluate the quality of borrower credit.
+      Credit scores are typically based on a proprietary statistical model that is developed for use by credit data
+      repositories. These credit repositories apply the model to borrower credit information to arrive at a
+      credit score. When this term is used by Fannie Mae, it is referring to the "classic" FICO score developed by
+      Fair Isaac Corporation.
+    fnma_notes: >-
+      Represents the credit score provided to Fannie Mae by the Seller at the time of loan acquisition.
+      If the borrower credit score is unknown, the value will be blank.
+    dd_type: pd.Int16Dtype
+    pa_type: int16
+    args:
+      - nullable
+  CO_FICO:
+    idx: 24
+    fnma_name: Co-Borrower Credit Score at Origination
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      A numerical value used by the financial services industry to evaluate the quality of borrower credit.
+      Credit scores are typically based on a proprietary statistical model that is developed for use by credit data
+      repositories. These credit repositories apply the model to co-borrower credit information to arrive at a
+      credit score. When this term is used by Fannie Mae, it is referring to the "classic" FICO score developed by
+      Fair Isaac Corporation.
+    fnma_notes: >-
+      Represents the credit score provided to Fannie Mae by the Seller at the time of loan acquisition.
+      If the co-borrower credit score  is not applicable or unknown, the value will be blank.
+    dd_type: pd.Int16Dtype
+    pa_type: int16
+    args:
+      - nullable
+  FIRST_TIME:
+    idx: 25
+    fnma_name: First Time Home Buyer Indicator
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: An indicator that denotes if the borrower or co-borrower qualifies as a first-time homebuyer.
+    fnma_notes: >-
+      An individual is to be considered a first-time homebuyer who
+        (1) is purchasing the property;
+        (2) will reside in the property; and
+        (3) had no ownership interest (sole or joint) in a residential property during the three-year period preceding
+          the date of the purchase of the property.
+
+      In addition, an individual who is a displaced homemaker or single parent also will be considered a first-time
+      homebuyer if he or she had no ownership interest in a principal residence (other than a joint ownership interest
+      with a spouse) during the preceding three-year time period.
+
+      Y = Yes
+      N = No
+      Null = Unknown
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  LOAN_PURPOSE:
+    idx: 26
+    fnma_name: Loan Purpose
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: >-
+      An indicator that denotes whether the mortgage loan is either a refinance mortgage or a purchase money mortgage.
+      Purpose may be the purchase of a new property or refinance of an existing lien (with cash out or with no
+      cash out).
+    fnma_notes: >-
+      Cash-Out Refinance = C
+      Refinance = R
+      Purchase = P
+      Refinance-Not Specified = U
+    dd_type: object
+    pa_type: string
+    args:
+      -category
+  PROP_TYPE:
+    idx: 27
+    fnma_name: Property Type
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: >-
+      An indicator that denotes whether the property type secured by the mortgage loan is a condominium,
+      co-operative, planned urban development (PUD), manufactured home, or single-family home.
+    fnma_notes: >-
+      CO = condominium
+      CP = co-operative
+      PU = Planned Urban Development
+      MH = manufactured home
+      SF = single-family home
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+  NUM_UNITS:
+    idx: 28
+    fnma_name: Number of Units
+    fnma_type: NUMERIC
+    fnma_desc: The number of units comprising the related mortgaged property (one, two, three, or four).
+    fnma_notes: ~
+    dd_type: int8
+    pa_type: int8
+    args:
+      - category
+  OCCUPANCY:
+    idx: 29
+    fnma_name: Occupancy Status
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: The classification describing the property occupancy status at the time the loan was originated.
+    fnma_notes: Principal = P; Second = S; Investor = I; Unknown = U
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+  STATE:
+    idx: 30
+    fnma_name: Property State
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: >-
+      A two-letter abbreviation indicating the state or territory within which the property securing the mortgage loan
+      is located.
+    fnma_notes: ~
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+  MSA:
+    idx: 31
+    fnma_name: Metropolitan Statistical Area (MSA)
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: >-
+      The numeric Metropolitan Statistical Area Code for the property securing the mortgage loan. MSAs are established
+      by the US Office of Management and Budget. An area usually qualifies as an MSA if it is defined by the Bureau of
+      the Census as an urbanized area and has a population of 50,000 or more in a total metropolitan area of at least
+      100,000. An MSA may consist of one or more counties.
+    fnma_notes: If the property is not in a designated MSA, the value will default to “00000.”
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+  ZIP_SHORT:
+    idx: 32
+    fnma_name: Zip Code Short
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: >-
+      Limited to the first three digits of the code designated by the U.S. Postal Service where the subject property
+      is located.
+    fnma_notes: ~
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+  INSURE_PCT:
+    idx: 33
+    fnma_name: Mortgage Insurance Percentage
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      The original percentage of mortgage insurance coverage obtained for an insured conventional mortgage loan and
+      used following the occurrence of an event of default to calculate the insurance benefit, as defined by the
+      underlying master primary insurance policy.
+    fnma_notes: ~
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+      - fillna: 0
+  AMORT_TYPE:
+    idx: 34
+    fnma_name: Amortization Type
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: >-
+      The classification of the loan as having either a fixed- or an adjustable-interest rate at the time the
+      loan was originated.
+    fnma_notes: Adjustable Rate Mortgages = ARM; Fixed Rate Mortgages = FRM
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  PP_PENALTY:
+    idx: 35
+    fnma_name: Prepayment Penalty Indicator
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: An indicator that denotes whether the borrower is subject to a penalty for early payment of principal.
+    fnma_notes: Y = Yes; N = No
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  IO_INDICATOR:
+    idx: 36
+    fnma_name: Interest Only Loan Indicator
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: >-
+      An indicator that denotes whether the loan only requires interest payments for a specified period of time
+      beginning with the first payment date.
+    fnma_notes: Y = Yes; N = No
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+  IO_FIRST_DT:
+    idx: 37
+    fnma_name: Interest Only First Principal And Interest Payment Date
+    fnma_type: DATE
+    fnma_desc: >-
+      For interest-only loans, the month and year that the first monthly scheduled fully amortizing principal and
+      interest payment is due.
+    fnma_notes: ~
+    dd_type: object
+    pa_type: date32
+    args:
+      - nullable
+      - date: "%m%Y"
+  IO_MTA:
+    idx: 38
+    fnma_name: Months to Amortization
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      For interest-only loans, the number of months from the current month to the first scheduled principal and
+      interest payment date.
+    fnma_notes: ~
+    dd_type: pd.Int16Dtype
+    pa_type: int16
+    args:
+      - nullable
+  CURRENT_DELINQ:
+    idx: 39
+    fnma_name: Current Loan Delinquency Status
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: The number of months the obligor is delinquent as determined by the governing mortgage documents.
+    fnma_notes: >-
+      For mortgage loans removed from the reference pool or historical data set, this field will be blank,
+      subsequent to the month of removal. If the delinquency is unknown, the value ‘XX’ will display.
+      In the event the loan is greater than or equal to 99 months delinquent, the field will report a '99'.
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+  LOAN_PAY_HIST:
+    idx: 40
+    fnma_name: Loan Payment History
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: >-
+      The coded string of values that describes the payment performance of the loan over the most recent 24 months.
+      The most recent month is located to the right.
+    fnma_notes: >-
+      For mortgage loans removed from the reference pool, this field will be blank.
+      In the event the loan is greater than or equal to 99 months delinquent, the field will report a 99.
+
+      00 = Current
+      01 = 30-59 days
+      02 = 60-89 days
+      03 = 90-119 days
+      04 = 120 - 149 days
+      05 = 150 - 179 days
+      06 = 180 - 209 days, etc.
+      XX = unknown
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  MOD_FLAG:
+    idx: 41
+    fnma_name: Modification Flag
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: An indicator that denotes if the mortgage loan has been modified.
+    fnma_notes: >-
+      Y = Yes
+      N = No
+
+      The Modification Flag will be set to “Y” once a mortgage loan has been modified.
+      Given the various mortgage loan modification programs available to borrowers, a mortgage loan could be modified
+      more than once. Although the Modification Flag is already set to “Y” from the first modification,
+      changes related to a subsequent modification will be reflected in the data.
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  MI_CANCEL:
+    idx: 42
+    fnma_name: Mortgage Insurance Cancellation Indicator
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: An indicator that denotes if the mortgage insurance (MI) has been cancelled since origination.
+    fnma_notes: >-
+      Y = MI has been cancelled
+      M = MI has not been cancelled
+      NA = Never has MI
+
+      As of the October 2017 remittance period, the MI coverage status will continue to be populated for loans removed
+      from a given reference pool. Prior to this remittance period, the MI Cancellation reflected “Null” for all loans
+      upon removal.
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  ZB_CODE:
+    idx: 43
+    fnma_name: Zero Balance Code
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: >-
+      A code indicating the reason the loan's balance was reduced to zero or experienced a credit event, if applicable.
+    fnma_notes: >-
+      01 = Prepaid or Matured
+      02 =  Third Party Sale
+      03 = Short Sale
+      06 = Repurchased
+      09 = Deed-in-Lieu; REO Disposition
+      15 = Notes Sales
+      96 = Removal (non-credit event)
+
+      Applies to all CAS deals prior to and including 2015-C03:
+
+      97 = Delinquency (credit event due to D180)
+      98 = Other Credit Event
+    dd_type: pd.Int16Dtype
+    pa_type: int16
+    args:
+      - nullable
+  ZB_EFFECT_DT:
+    idx: 44
+    fnma_name: Zero Balance Effective Date
+    fnma_type: DATE
+    fnma_desc: Date on which the mortgage loan balance was reduced to zero.
+    fnma_notes: ~
+    dd_type: object
+    pa_type: date32
+    args:
+      - date: "%m%Y"
+      - nullable
+  UPB_AT_REMOVAL:
+    idx: 45
+    fnma_name: UPB at the Time of Removal
+    fnma_type: NUMERIC
+    fnma_desc: The unpaid principal balance of the loan at the time of removal.
+    fnma_notes: Populated as a loan hits a Zero Balance Code, or is otherwise liquidated.
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+  BLANK46:
+    idx: 46
+    args:
+      - drop
+  BLANK47:
+    idx: 47
+    args:
+      - drop
+  PRIN_CURR:
+    idx: 48
+    fnma_name: Total Principal Current
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      The change between the prior reporting period’s disclosed Current Actual UPB and the current reporting period’s
+      disclosed Current Actual UPB.
+    fnma_notes: >-
+      The total principal amount may be affected by corrections of previously made errors related to principal payments.
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+  BLANK49:
+    idx: 49
+    args:
+      - drop
+  LAST_PAID_DT:
+    idx: 50
+    fnma_name: Last Paid Installment Date
+    fnma_type: DATE
+    fnma_desc: The due date of the last paid installment that was collected for the mortgage loan.
+    fnma_notes: ~
+    dd_type: object
+    pa_type: date32
+    args:
+      - date: "%m%Y"
+      - nullable
+  FORECLOSE_DT:
+    idx: 51
+    fnma_name: Foreclosure Date
+    fnma_type: DATE
+    fnma_desc: The date on which the completion of the legal action of foreclosure occurred.
+    fnma_notes: >-
+      Servicers may also refer to this as the liquidation or sale date, not to be confused with the REO sale date.
+    dd_type: object
+    pa_type: date32
+    args:
+      - date: "%m%Y"
+      - nullable
+  DISPOS_DT:
+    idx: 52
+    fnma_name: Disposition Date
+    fnma_type: DATE
+    fnma_desc: >-
+      The date on which Fannie Mae’s interest in a property ends through either the transfer of the property to a
+      third party or the satisfaction of the mortgage obligation.
+    fnma_notes: ~
+    dd_type: object
+    pa_type: date32
+    args:
+      - date: "%m%Y"
+      - nullable
+  FORECLOST_COST:
+    idx: 53
+    fnma_name: Foreclosure Costs
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      Expenses associated with obtaining title to property from the mortgagor, valuing the property, and maintaining
+      utility services to the property. Such costs include costs and fees associated with bankruptcy and foreclosure.
+    fnma_notes: >-
+      This field will be populated after the disclosed disposition date of the mortgage loan or the subject property,
+      as applicable, based on individual CRT deal claims and reporting timelines.
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+  PPR_COST:
+    idx: 54
+    fnma_name: Property Preservation and Repair Costs
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      The expenses associated with securing and preserving the property including two major categories:  maintenance
+      and repairs. Maintenance costs are associated with preserving the property through normal upkeep, while repairs
+      are associated with either avoiding deterioration of the asset or a marketing decision to help maximize sales
+      proceeds upon final disposition.
+    fnma_notes: >-
+      This field will be populated after the disclosed disposition date of the mortgage loan or the subject property,
+      as applicable, based on individual CRT deal claims and reporting timelines.
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+  AR_COST:
+    idx: 55
+    fnma_name: Asset Recovery Costs
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      Expenses associated with removing occupants and personal property from an occupied property post foreclosure.
+      Such expenses include relocation assistance, deed-in-lieu fee, and fees and costs associated with
+      eviction actions.
+    fnma_notes: >-
+      This field will be populated after the disclosed disposition date of the mortgage loan or the subject property,
+      as applicable, based on individual CRT deal claims and reporting timelines.
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+  MISC_COST:
+    idx: 56
+    fnma_name: Miscellaneous Holding Expenses and Credits
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      Expenses and credits associated with preserving the property, including Homeowners Association and other dues;
+      flood, hazard, and MI premiums and refunds; rental income; and title insurance costs.
+    fnma_notes: >-
+      This field will be populated after the disclosed disposition date of the mortgage loan or the subject property,
+      as applicable, based on individual CRT deal claims and reporting timelines.
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+  PROP_TAX:
+    idx: 57
+    fnma_name: Associated Taxes for Holding Property
+    fnma_type: NUMERIC
+    fnma_desc: Payment of taxes associated with holding the property.
+    fnma_notes: >-
+      This field will be populated after the disclosed disposition date of the mortgage loan or the subject property,
+      as applicable, based on individual CRT deal claims and reporting timelines.
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+  SALE_PROCEED:
+    idx: 58
+    fnma_name: Net Sales Proceeds
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      Total cash received from the sale of the property net of any applicable selling expenses, such as fees and
+      commissions, allowable for inclusion under the terms of the property sale, as currently reported on the HUD-1
+      or other settlement statement.
+    fnma_notes: >-
+      This field will be populated after the disclosed disposition date of the mortgage loan or the subject property,
+      as applicable, based on individual CRT deal claims and reporting timelines.
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+  CE_PROCEED:
+    idx: 59
+    fnma_name: Credit Enhancement Proceeds
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      Proceeds from primary mortgage insurance policy claims and recourse and indemnification payments from lenders
+      under arrangements designed to limit credit exposure to Fannie Mae.
+    fnma_notes: >-
+      This field will be populated after the disclosed disposition date of the mortgage loan or the subject property,
+      as applicable, based on individual CRT deal claims and reporting timelines.
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+  REPO_MW_PROCEED:
+    idx: 60
+    fnma_name: Repurchase Make Whole Proceeds
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      Amounts received by Fannie Mae under the terms of our representation and warranty arrangements for the repurchase
+      of the mortgage loan or the subject property or loss reimbursement subsequent to property disposition.
+    fnma_notes: >-
+      Includes make whole proceeds associated with mortgage loans that were part of a bulk settlement. This field will
+      be populated after the disclosed disposition date of the mortgage loan or the subject property, as applicable,
+      based on individual CRT deal claims and reporting timelines.
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+  OTHER_PROCEED:
+    idx: 61
+    fnma_name: Other Foreclosure Proceeds
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      Amounts, other than sale proceeds, received by Fannie Mae following foreclosure of a property, including
+      redemption proceeds received from the mortgagor.
+    fnma_notes: >-
+      This field will be populated after the disclosed disposition date of the mortgage loan or the subject property,
+      as applicable, based on individual CRT deal claims and reporting timelines.
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+  NONINT_UPB:
+    idx: 62
+    fnma_name: Non-Interest Bearing UPB
+    fnma_type: NUMERIC
+    fnma_desc: A portion of the UPB, as a result of an eligible loan modification, that will not accrue interest.
+    fnma_notes: ~
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+  PRIN_FORGIVE_AMT:
+    idx: 63
+    fnma_name: Principal Forgiveness Amount
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      A reduction of the UPB owed on a mortgage by a borrower that is formally agreed to by the lender and the borrower,
+      usually in conjunction with a loan modification.
+    fnma_notes: ~
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+  BLANK64:
+    idx: 64
+    args:
+      - drop
+  BLANK65:
+    idx: 65
+    args:
+      - drop
+  BLANK66:
+    idx: 66
+    args:
+      - drop
+  BLANK67:
+    idx: 67
+    args:
+      - drop
+  BLANK68:
+    idx: 68
+    args:
+      - drop
+  BLANK69:
+    idx: 69
+    args:
+      - drop
+  BLANK70:
+    idx: 70
+    args:
+      - drop
+  BLANK71:
+    idx: 71
+    args:
+      - drop
+  INS_TYPE:
+    idx: 72
+    fnma_name: Mortgage Insurance Type
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: The entity that is responsible for the Mortgage Insurance premium payment.
+    fnma_notes: >-
+      1 = Borrower Paid
+      2 = Lender Paid
+      3 = Enterprise Paid *
+      Null = No MI
+    dd_type: pd.Int16Dtype
+    pa_type: int16
+    args:
+      - category
+      - nullable
+  SVC_FLAG:
+    idx: 73
+    fnma_name: Servicing Activity Indicator
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: An indicator that denotes a change in servicing activity during the corresponding reporting period.
+    fnma_notes: >-
+      This indicator is designed to identify changes that have generally occurred to the primary servicer or
+      sub-servicing arrangement for the mortgage loan.  Not all mortgage loans identified with this indicator require
+      specific action on the part of the respective borrower or co-borrower.
+
+      Y = Yes
+      N = No
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  BLANK74:
+    idx: 74
+    args:
+      - drop
+  BLANK75:
+    idx: 75
+    args:
+      - drop
+  BLANK76:
+    idx: 76
+    args:
+      - drop
+  BLANK77:
+    idx: 77
+    args:
+      - drop
+  HOMEREADY_FLAG:
+    idx: 78
+    fnma_name: HomeReady Program Indicator
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: >-
+      An indicator that denotes if the borrower participated in Fannie Mae’s HomeReady program.
+
+      HomeReady is our affordable, low down payment mortgage product designed to expand the availability of mortgage
+      financing to creditworthy low-to-moderate-income borrowers.
+    fnma_notes: Y = Yes; N = No
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  FORECLOSE_PRIN_WO_AMT:
+    idx: 79
+    fnma_name: Foreclosure Principal Write-off Amount
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      Amounts that Fannie Mae or its loan servicers have determined to be uncollectable under applicable state laws,
+      due to foreclosure statute of limitations.
+    fnma_notes: ~
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+  RELOC_FLAG:
+    idx: 80
+    fnma_name: Relocation Mortgage Indicator
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: >-
+      An indicator that denotes whether or not the type of mortgage loan is a relocation mortgage loan, made to
+      borrowers whose employers relocate their employees.
+    fnma_notes: Y = Yes; N = No
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  BLANK81:
+    idx: 81
+    args:
+      - drop
+  BLANK82:
+    idx: 82
+    args:
+      - drop
+  BLANK83:
+    idx: 83
+    args:
+      - drop
+  BLANK84:
+    idx: 84
+    args:
+      - drop
+  VAL_METHOD:
+    idx: 85
+    fnma_name: Property Valuation Method
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: An indicator that denotes the method by which the value of the subject property was obtained.
+    fnma_notes: >-
+      A = Appraisal
+      P = Onsite Property Data Collection
+      R = GSE Targeted Refinance
+      W = Appraisal Waiver
+      O = Other
+
+      CAS: Applies to CAS deals after CAS 2017C07, all prior deals will reflect null values.
+
+      CIRT: Applies to deals after CIRT 2017-7, all prior deals will reflect null values
+
+      SF Loan Performance: Applies to acquisitions on or after Jan 1 2017, all prior acquisitions will show null values
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  HIBAL_FLAG:
+    idx: 86
+    fnma_name: High Balance Loan Indicator
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: >-
+      An indicator that denotes if the original principal balance of a mortgage loan is greater than the general
+      conforming loan limit and up to the high-cost area loan limit.
+    fnma_notes: Y = Yes; N = No
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  BLANK87:
+    idx: 87
+    args:
+      - drop
+  BLANK88:
+    idx: 88
+    args:
+      - drop
+  BLANK89:
+    idx: 89
+    args:
+      - drop
+  BLANK90:
+    idx: 90
+    args:
+      - drop
+  BLANK91:
+    idx: 91
+    args:
+      - drop
+  BLANK92:
+    idx: 92
+    args:
+      - drop
+  BLANK93:
+    idx: 93
+    args:
+      - drop
+  BLANK94:
+    idx: 94
+    args:
+      - drop
+  BLANK95:
+    idx: 95
+    args:
+      - drop
+  BLANK96:
+    idx: 96
+    args:
+      - drop
+  BLANK97:
+    idx: 97
+    args:
+      - drop
+  BLANK98:
+    idx: 98
+    args:
+      - drop
+  BLANK99:
+    idx: 99
+    args:
+      - drop
+  BLANK100:
+    idx: 100
+    args:
+      - drop
+  BORROWER_ASSIST:
+    idx: 101
+    fnma_name: Borrower Assistance Plan
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: >-
+      An indicator that denotes the type of assistance plan that the borrower is enrolled in that provides temporary
+      mortgage payment relief or an opportunity for the borrower to cure a mortgage delinquency over a defined period.
+    fnma_notes: >-
+      Such Borrower Assistance Plan indicator is as of the respective reporting period.
+
+      F = Forbearance Plan
+      R = Repayment Plan
+      T = Trial Period Plan
+      O = Other Workout Plan
+      N = No Workout Plan
+      7 = Not Applicable
+      9 = Not Available
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  HLTV_REFI_FLAG:
+    idx: 102
+    fnma_name: High Loan to Value (HLTV) Refinance Option Indicator
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: >-
+      An indicator that denotes if an eligible original reference loan is refinanced under Fannie Mae’s HLTV refinance
+      option, which results in such mortgage loan remaining in the Reference Pool, as further defined in each individual
+      CRT document, if applicable.
+    fnma_notes: Y = Yes; N = No
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  BLANK103:
+    idx: 103
+    args:
+      - drop
+  REPO_MW_PROCEED_FLAG:
+    idx: 104
+    fnma_name: Repurchase Make Whole Proceeds Flag
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: >-
+      Indicates if Fannie Mae received proceeds under the terms of its representation and warranty arrangements for the
+      repurchase of the mortgage loan.
+    fnma_notes:   Y = Yes; N = No
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  DELINQ_RES:
+    idx: 105
+    fnma_name: Alternative Delinquency Resolution
+    fnma_type: ALPHA-NUMERIC
+    fnma_desc: >-
+      An indicator that denotes the loss mitigation solution designed to resolve delinquencies and help homeowners
+      remain in their homes in accordance with the servicer’s contractual obligation, while allowing the loan to remain
+      in the security.
+    fnma_notes: >-
+      Alternative Delinquency Resolution as of the respective reporting period
+
+      P = payment deferral option
+      C = payment deferral option specific to COVID-19
+      D = payment deferral option specific to certain natural disaster related events
+      7 = Not Applicable
+      9 = Not Available
+    dd_type: object
+    pa_type: string
+    args:
+      - category
+      - nullable
+  DELINQ_RES_COUNT:
+    idx: 106
+    fnma_name: Alternative Delinquency Resolution Count
+    fnma_type: NUMERIC
+    fnma_desc: The total number of Alternative Delinquency Resolutions as reported by the servicer for a specific loan.
+    fnma_notes: ~
+    dd_type: pd.Int16Dtype
+    pa_type: int16
+    args:
+      - nullable
+  TOTAL_DEFER_AMT:
+    idx: 107
+    fnma_name: Total Deferral Amount
+    fnma_type: NUMERIC
+    fnma_desc: >-
+      The total non-interest-bearing deferral amount related to one or more Alternative Delinquency Resolutions.
+    fnma_notes: ~
+    dd_type: float32
+    pa_type: float32
+    args:
+      - nullable
+
+
+
+
+
+
+
+
+
+
