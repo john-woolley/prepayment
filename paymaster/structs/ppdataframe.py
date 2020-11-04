@@ -2,8 +2,7 @@ import json
 import yaml
 import dask.dataframe as dd
 import os
-import numpy as np
-import pandas as pd
+import psutil
 import pyarrow as pa
 
 
@@ -76,7 +75,9 @@ class PrepayDataFrame:
     def read_csv(self):
         self.ingested_files = os.listdir(self.raw_src)
         data = dd.read_csv(self.raw_src+'/*', sep='|', header=None,
-                           dtype=self.dd_types, parse_dates=self.date_columns)
+                           dtype=self.dd_types, parse_dates=self.date_columns,
+                           blocksize=int(psutil.virtual_memory().total /
+                                         psutil.cpu_count() / 2))
         data = data.rename(columns=self.column_headers)
         data = data.drop(columns=self._dropped_cols)
         data = data.categorize(self._categories)
