@@ -128,8 +128,8 @@ ingest_columns:
       For fixed-rate, adjustable-rate and Interest-only mortgages, the number of months in which regularly scheduled
       borrower payments are due at the time the loan was originated.
     fnma_notes: ~
-    dd_type: int16
-    pa_type: int16
+    dd_type: float32
+    pa_type: float32
   ORIG_DT:
     idx: 13
     fnma_name: Origination Date
@@ -161,8 +161,8 @@ ingest_columns:
       amortizes to a zero balance, taking into account any additional prepayments, which could lead to the loan
       paying off earlier than its maturity date.
     fnma_notes: This field will be left blank for mortgage loans that have been modified.
-    dd_type: pd.Int16Dtype
-    pa_type: int16
+    dd_type: float32
+    pa_type: float32
     args:
       - nullable
   LEGAL_MTM:
@@ -173,8 +173,8 @@ ingest_columns:
       The number of calendar months remaining until the mortgage loan is due to be paid in full based on the maturity
       date as defined in the mortgage documents.
     fnma_notes: ~
-    dd_type: pd.Int16Dtype
-    pa_type: int16
+    dd_type: float32
+    pa_type: float32
     args:
       - nullable
   MTM:
@@ -186,8 +186,8 @@ ingest_columns:
       amortizes to a zero balance, taking into account any additional prepayments, which could lead to the loan
       paying off earlier than its maturity date.
     fnma_notes: This field will be left blank for mortgage loans that have been modified.
-    dd_type: pd.Int16Dtype
-    pa_type: int16
+    dd_type: float32
+    pa_type: float32
     args:
       - nullable
   MAT_DT:
@@ -230,8 +230,8 @@ ingest_columns:
       When an appraisal is obtained and is used to successfully establish HARP program eligibility, it is used
       to calculate the disclosed LTV ratio. Value is reported as null if LTV is >97% or is >200% for a mortgage loan
       acquired through a HARP refinance, or unknown.
-    dd_type: pd.Int16Dtype
-    pa_type: int16
+    dd_type: float32
+    pa_type: float32
     args:
       - nullable
   ORIG_CLTV:
@@ -251,8 +251,8 @@ ingest_columns:
       and dividing the resulting sum by the lower of
         (x) the sales price of the mortgaged property and
         (y) the value of the mortgaged property.
-    dd_type: pd.Int16Dtype
-    pa_type: int16
+    dd_type: float32
+    pa_type: float32
     args:
       - nullable
   NUM_BORROWERS:
@@ -261,8 +261,8 @@ ingest_columns:
     fnma_type: NUMERIC
     fnma_desc: The number of individuals obligated to repay the mortgage loan.
     fnma_notes: ~
-    dd_type: pd.Int16Dtype
-    pa_type: int16
+    dd_type: float32
+    pa_type: float32
     args:
       - category
       - nullable
@@ -276,8 +276,8 @@ ingest_columns:
     fnma_notes: >-
       For values outside the allowable range, or if unknown, or if the mortgage loan is a HARP refinance,
       this value will be blank.
-    dd_type: pd.Int16Dtype
-    pa_type: int16
+    dd_type: float32
+    pa_type: float32
     args:
       - nullable
   FICO:
@@ -293,8 +293,8 @@ ingest_columns:
     fnma_notes: >-
       Represents the credit score provided to Fannie Mae by the Seller at the time of loan acquisition.
       If the borrower credit score is unknown, the value will be blank.
-    dd_type: pd.Int16Dtype
-    pa_type: int16
+    dd_type: float32
+    pa_type: float32
     args:
       - nullable
   CO_FICO:
@@ -310,8 +310,8 @@ ingest_columns:
     fnma_notes: >-
       Represents the credit score provided to Fannie Mae by the Seller at the time of loan acquisition.
       If the co-borrower credit score  is not applicable or unknown, the value will be blank.
-    dd_type: pd.Int16Dtype
-    pa_type: int16
+    dd_type: float32
+    pa_type: float32
     args:
       - nullable
   FIRST_TIME:
@@ -501,8 +501,8 @@ ingest_columns:
       For interest-only loans, the number of months from the current month to the first scheduled principal and
       interest payment date.
     fnma_notes: ~
-    dd_type: pd.Int16Dtype
-    pa_type: int16
+    dd_type: float32
+    pa_type: float32
     args:
       - nullable
   CURRENT_DELINQ:
@@ -597,8 +597,8 @@ ingest_columns:
 
       97 = Delinquency (credit event due to D180)
       98 = Other Credit Event
-    dd_type: pd.Int16Dtype
-    pa_type: int16
+    dd_type: float32
+    pa_type: float32
     args:
       - nullable
   ZB_EFFECT_DT:
@@ -876,8 +876,8 @@ ingest_columns:
       2 = Lender Paid
       3 = Enterprise Paid *
       Null = No MI
-    dd_type: pd.Int16Dtype
-    pa_type: int16
+    dd_type: float32
+    pa_type: float32
     args:
       - category
       - nullable
@@ -1141,8 +1141,8 @@ ingest_columns:
     fnma_type: NUMERIC
     fnma_desc: The total number of Alternative Delinquency Resolutions as reported by the servicer for a specific loan.
     fnma_notes: ~
-    dd_type: pd.Int16Dtype
-    pa_type: int16
+    dd_type: float32
+    pa_type: float32
     args:
       - nullable
   TOTAL_DEFER_AMT:
