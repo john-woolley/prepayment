@@ -378,8 +378,8 @@ ingest_columns:
     fnma_type: NUMERIC
     fnma_desc: The number of units comprising the related mortgaged property (one, two, three, or four).
     fnma_notes: ~
-    dd_type: int8
-    pa_type: int8
+    dd_type: float32
+    pa_type: float32
     args:
       - category
   OCCUPANCY:
