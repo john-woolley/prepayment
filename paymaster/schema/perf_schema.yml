@@ -31,6 +31,7 @@ ingest_columns:
     dd_type: object
     pa_type: string
     args:
+      - date: "%m%Y"
       - category
   CHANNEL:
     idx: 3
@@ -136,7 +137,9 @@ ingest_columns:
     fnma_desc: The date of each individual note.
     fnma_notes: ~
     dd_type: object
-    pa_type: string
+    pa_type: date32
+    args:
+      - date: "%m%Y"
   FIRST_PAY_DT:
     idx: 14
     fnma_name: First Payment Date
@@ -146,7 +149,9 @@ ingest_columns:
       mortgage loan documents.
     fnma_notes: ~
     dd_type: object
-    pa_type: string
+    pa_type: date32
+    args:
+      - date: "%m%Y"
   LOAN_AGE:
     idx: 15
     fnma_name: Loan Age
@@ -196,9 +201,9 @@ ingest_columns:
       For a mortgage loan that has been modified, the maturity date will be updated to reflect the modified terms,
       if applicable.
     dd_type: object
-    pa_type: string
+    pa_type: date32
     args:
-
+      - date: "%m%Y"
       - nullable
   ORIG_LTV:
     idx: 19
@@ -484,9 +489,10 @@ ingest_columns:
       interest payment is due.
     fnma_notes: ~
     dd_type: object
-    pa_type: string
+    pa_type: date32
     args:
       - nullable
+      - date: "%m%Y"
   IO_MTA:
     idx: 38
     fnma_name: Months to Amortization
@@ -602,9 +608,9 @@ ingest_columns:
     fnma_desc: Date on which the mortgage loan balance was reduced to zero.
     fnma_notes: ~
     dd_type: object
-    pa_type: string
+    pa_type: date32
     args:
-
+      - date: "%m%Y"
       - nullable
   UPB_AT_REMOVAL:
     idx: 45
@@ -648,8 +654,9 @@ ingest_columns:
     fnma_desc: The due date of the last paid installment that was collected for the mortgage loan.
     fnma_notes: ~
     dd_type: object
-    pa_type: string
+    pa_type: date32
     args:
+      - date: "%m%Y"
       - nullable
   FORECLOSE_DT:
     idx: 51
@@ -659,8 +666,9 @@ ingest_columns:
     fnma_notes: >-
       Servicers may also refer to this as the liquidation or sale date, not to be confused with the REO sale date.
     dd_type: object
-    pa_type: string
+    pa_type: date32
     args:
+      - date: "%m%Y"
       - nullable
   DISPOS_DT:
     idx: 52
@@ -671,8 +679,9 @@ ingest_columns:
       third party or the satisfaction of the mortgage obligation.
     fnma_notes: ~
     dd_type: object
-    pa_type: string
+    pa_type: date32
     args:
+      - date: "%m%Y"
       - nullable
   FORECLOST_COST:
     idx: 53

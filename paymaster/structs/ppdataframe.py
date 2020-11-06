@@ -76,7 +76,7 @@ class PrepayDataFrame:
                            dtype=self.dd_types, parse_dates=self.date_columns)
         data = data.rename(columns=self.column_headers)
         data = data.drop(columns=self._dropped_cols)
-        # data = data.categorize(self._categories)
+        data = data.categorize(self._categories)
         self.data = data
 
     def read_parquet(self):
