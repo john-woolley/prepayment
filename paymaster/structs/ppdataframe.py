@@ -30,7 +30,7 @@ class PrepayDataFrame:
         self._get_dropped_cols()
         self.dd_types = {}
         self._get_types()
-        self.pa_types = {k: getattr(pa, v['pa_type']())
+        self.pa_types = {k: getattr(pa, v['pa_type'])()
                          for k, v in ingest.items()
                          if k not in self._dropped_cols}
         self._categories = []
