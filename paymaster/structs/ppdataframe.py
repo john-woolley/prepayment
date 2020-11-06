@@ -30,7 +30,7 @@ class PrepayDataFrame:
         self._get_dropped_cols()
         self.dd_types = {}
         self._get_types()
-        self.pa_types = {k: (getattr(pa, v['pa_type']))
+        self.pa_types = {k: getattr(pa, v['pa_type']())
                          for k, v in ingest.items()
                          if k not in self._dropped_cols}
         self._categories = []
@@ -68,8 +68,6 @@ class PrepayDataFrame:
                     pkg, typ = v['dd_type'].split('.')
                     self.dd_types[v['idx']] = getattr(globals()[pkg], typ)()
                 else:
-                    if v['dd_type'] == 'float32':
-                        print(k)
                     self.dd_types[v['idx']] = v['dd_type']
 
     def read_csv(self):
@@ -78,7 +76,7 @@ class PrepayDataFrame:
                            dtype=self.dd_types, parse_dates=self.date_columns)
         data = data.rename(columns=self.column_headers)
         data = data.drop(columns=self._dropped_cols)
-        data = data.categorize(self._categories)
+        # data = data.categorize(self._categories)
         self.data = data
 
     def read_parquet(self):
