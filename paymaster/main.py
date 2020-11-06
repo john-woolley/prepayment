@@ -14,7 +14,8 @@ if __name__ == '__main__':
     __spec__ = None
     load_title(APP_NAME, VERSION, DATE)
     print(os.getcwd(), datetime.now())
-    cluster_resume = str(input('Running Cluster or ENTER for new local: ') or 'new')
+    cluster_resume = input('Input Running Cluster ipv4:port or enter "new" for'
+                           ' a new local: ')
     if cluster_resume != 'new':
         print(cluster_resume)
         client = Client(cluster_resume)
